@@ -6,20 +6,20 @@ import (
 	"strconv"
 	"strings"
 )
-
+//структура где хранятся наши данные 
 type Person struct {
 	Name string
 	Age int
 	City string
 }
-
+//функция для просмотра людей в базе
 func showBase(people []Person) {
 	for _, p := range people {
 		p.FullInfo
 		fmt.Println("-------------")
 	}
 }
-
+//функция для добавления людей в базу
 func addBase(people []Person) []Person {
 	var number int
 	fmt.Println("Хотите добавить нового человека?")
@@ -56,7 +56,7 @@ func addBase(people []Person) []Person {
 	}
 	return people
 }
-
+//функция для сохранения в файле
 func savePeople(people []Person) {
 	text := ""
 
@@ -70,7 +70,7 @@ func savePeople(people []Person) {
 	}
 	fmt.Println("База успешно перезаписана")
 }
-
+//функция для поиска людей в базе
 func findBase(people []Person) {
 	var tempname string
 	fmt.Println("кого хотите найти?")
@@ -87,11 +87,11 @@ func findBase(people []Person) {
 		fmt.Println("Такого человека нет")
 	}
 }
-
+//функция для выдачи полной информации о людях
 func (p Person) FullInfo() {
 	fmt.Print("%s,%d,%s\n", p.Name, p.Age, p.City)
 }
-
+//функция для поиска самого молодого и возрастного человека + чредний возраст
 func staticBase(people []Person) {
 	if len(people) == 0 {
 		fmt.Println("База пуста")
@@ -122,7 +122,7 @@ func staticBase(people []Person) {
 		fmt.Println("Средний возраст людей в базе:",sum / value)
 	}
 }
-
+//поиск людей по городу
 func searchCity(people []Person) {
 	var foundMCity string
 	fmt.Println("Какой город ищите?")
@@ -142,47 +142,49 @@ func searchCity(people []Person) {
 }
 
 
+//основная функция
 func main() {
+	//флаг для бесконечного цикла
 	flag := false
 
-	// Читаем весь файл сразу (возвращает []byte)
+	// Читаем весь файл
 	data, err := os.ReadFile("people.txt")
-
+	//если файл не откроется выдаем ошибку
 	if err != nil {
 		fmt.Println("Ошибка чтения файла:", err)
 		return
 	}
-
 	// Превращаем байты в строку и разбиваем по переносу строки
 	lines := strings.Split(string(data), "\n")
-
+	//создаем нашу структуру
 	people := []Person{}
-
+	//скипаем пробелы
 	for _, line := range lines {
 		if line == "" {
 			continue
 		}
-
+		//разделяем строку на три кусочка(имя , возраст и город)
 		parts := strings.Split(line, ",")
-
+		//скипаем если нет трех столбцов с критериями(имя , возраст и город) , чтоб программа не ушла в панику
 		if len(parts) != 3 {
 			continue
 		}
-		
+		//преобразуем int в string
 		age, err := strconv.Atoi(parts[1])
+		//если нет возраста скипаем
 		if err != nil {
 			continue
 		}
-
+		//инициализируем нашу струтуру
 		person := Person {
 			Name: parts[0],
 			Age: age,
 			City: parts[2],
 		}
-
+		//добавялем наших людей из файла в структуру 
 		people = append(people, person)
 	}
-
+	//запускаем интерактивчик
 	for !flag {
 		fmt.Println("1.Показать базу")
 		fmt.Println("2.Добавить")
@@ -190,11 +192,11 @@ func main() {
 		fmt.Println("4.Статистика")
 		fmt.Println("5.Поиск по городам")
 		fmt.Println("6.Выход")
-
+		//выбор действия
 		var count int
 		fmt.Println("Выберите действие")
 		fmt.Scanln(&count)
-
+		//уходим в функции в зависимости от выбора действия 
 		switch count {
 			case 1:
 				showBase(people)
@@ -210,6 +212,6 @@ func main() {
 				fmt.Println("Всего хорошего , до свидания")
 				flag = true
 
-			}
+		}
 	}
 }
