@@ -89,7 +89,7 @@ func findBase(people []Person) {
 }
 //функция для выдачи полной информации о людях
 func (p Person) FullInfo() {
-	fmt.Print("%s,%d,%s\n", p.Name, p.Age, p.City)
+	fmt.Printf("%s,%d,%s\n", p.Name, p.Age, p.City)
 }
 //функция для поиска самого молодого и возрастного человека + чредний возраст
 func staticBase(people []Person) {
