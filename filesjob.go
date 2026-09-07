@@ -15,7 +15,7 @@ type Person struct {
 //функция для просмотра людей в базе
 func showBase(people []Person) {
 	for _, p := range people {
-		p.FullInfo
+		p.FullInfo()
 		fmt.Println("-------------")
 	}
 }
